@@ -46,8 +46,13 @@ class Node:
             print(self.selectCriteria.threshold_value,end=" ")
         else:
             print("[leaf->" + self.class_name + "]", end=" ")
-        print(str(len(self.data_src)) + "  " + str(self.entrophy) + "  ", end="")
-        print(self.data_src)
+        #print(str(len(self.data_src)) + "  " + str(self.entrophy) + "  ", end="")
+        print("data set length:" + str(len(self.data_src)),end="")
+        if not self.is_leaf:
+            print("  entrophy:" + str(self.entrophy))
+        else:
+            print("")
+        #print(self.data_src)
 
     def get_select_criteria(self):
         #print("-----Debugging get criteria------")
