@@ -30,17 +30,17 @@ def cal_info_gain(previous,partitioned_list):
     pre_e = cal_entrophy(extract_target(previous))
     total_partition_e = 0
     total_sample_cnt = len(previous)
-    print("before partition:" + str(pre_e), end="")
+    #print("before partition:" + str(pre_e), end="")
     value, counts = np.unique(extract_target(previous), return_counts=True)
-    print(value,counts)
+    #print(value,counts)
     for partition in partitioned_list:
         partition_e = cal_entrophy(extract_target(partition))
         total_partition_e += partition_e * len(partition) / total_sample_cnt
-    print("after partition:" + str(), end="")
+    #print("after partition:" + str(), end="")
     value, counts = np.unique(extract_target(partitioned_list[0]), return_counts=True)
-    print(value,counts,end=" | ")
+    #print(value,counts,end=" | ")
     value, counts = np.unique(extract_target(partitioned_list[1]), return_counts=True)
-    print(value,counts)
+    #print(value,counts)
     return pre_e - total_partition_e
 
 
@@ -71,13 +71,13 @@ def get_split_criteria(index_list):
     best_split_on = 0
     best_split_point = float("-inf")
     best_info_gain = float("-inf")
-    print("splited_points:")
+    #print("splited_points:")
     for i in range(feature_cnt):
         pts = get_split_points(extract_data(index_list)[:,i])
         split_points.append(pts)
-        print("length:" + str(len(pts)), end=" ")
-        print(pts)
-    print("trying out best info gain split")
+        #print("length:" + str(len(pts)), end=" ")
+        #print(pts)
+    #print("trying out best info gain split")
     for i in range(feature_cnt):
         s_points = split_points[i]
         for split_point in s_points:
@@ -90,6 +90,6 @@ def get_split_criteria(index_list):
                 best_split_on = i
                 best_split_point = split_point
                 best_info_gain = info_gain
-                print("better info gain found:" + str(info_gain))
+                #print("better info gain found:" + str(info_gain))
     return best_split_on,best_split_point
 

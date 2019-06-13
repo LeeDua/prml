@@ -29,7 +29,7 @@ class Node:
         self.child_list.append(child_node)
 
     def predict(self):
-        pass
+        return self.class_index,self.class_name
 
     def print_current(self):
         for i in range(self.current_depth):
@@ -43,18 +43,17 @@ class Node:
         print(str(len(self.data_src)) + "  " + str(self.entrophy) + "  ", end="")
         print(self.data_src)
 
-
     def get_select_criteria(self):
-        print("-----Debugging get criteria------")
-        for i in range(self.current_depth):
-            print("--|", end="")
-        print(str(self.current_depth))
-        print("data_src:",end="")
-        print(self.data_src)
+        #print("-----Debugging get criteria------")
+        #for i in range(self.current_depth):
+        #    print("--|", end="")
+        #print(str(self.current_depth))
+        #print("data_src:",end="")
+        #print(self.data_src)
         best_split_on,best_split_point = get_split_criteria(self.data_src)
         self.selectCriteria = SelectCriteria(best_split_on,best_split_point)
         self.child_split = split_partition(self.data_src,best_split_on,best_split_point)
-        print("-------------------------------\n")
+        #print("-------------------------------\n")
 
     def check_is_leaf(self):
         classes,counts = np.unique(extract_target(self.data_src),return_counts=True)
@@ -69,4 +68,15 @@ class Node:
         else:
             self.class_index = classes[counts.tolist().index(max(counts))]
             self.class_name = target_names[self.class_index]
+
+    def route_to_next(self,x_input):
+        if self.is_leaf:
+            print("Should not call route next on leaf node")
+            return
+        if x_input[self.selectCriteria.attri_index] < self.selectCriteria.threshold_value:
+            #print(str(x_input) + "->" + str(x_input[self.selectCriteria.attri_index]) + "<" + str(self.selectCriteria.threshold_value))
+            return self.child_list[0]
+        else:
+            #print(str(x_input) + "->" + str(x_input[self.selectCriteria.attri_index]) + ">=" + str(self.selectCriteria.threshold_value))
+            return self.child_list[1]
 
