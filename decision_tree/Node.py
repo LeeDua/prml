@@ -15,6 +15,7 @@ class Node:
         self.is_left_node = _is_left_node
         self.class_index = None
         self.class_name = None
+        self.pruned = False
         if not self.parent:
             self.current_depth = 1
         else:
@@ -29,6 +30,11 @@ class Node:
         self.child_list.append(child_node)
 
     def predict(self):
+        classes, counts = np.unique(extract_target(self.data_src), return_counts=True)
+        class_cnt = len(classes)
+        if class_cnt != 0:
+            self.class_index = classes[counts.tolist().index(max(counts))]
+            self.class_name = target_names[self.class_index]
         return self.class_index,self.class_name
 
     def print_current(self):
@@ -60,6 +66,10 @@ class Node:
         class_cnt = len(classes)
         if class_cnt <= 1:
             self.is_leaf = True
+        if class_cnt != 0:
+            self.class_index = classes[counts.tolist().index(max(counts))]
+            self.class_name = target_names[self.class_index]
+            '''
             if class_cnt == 1:
                 self.class_index = classes[0]
                 self.class_name = target_names[self.class_index]
@@ -68,7 +78,7 @@ class Node:
         else:
             self.class_index = classes[counts.tolist().index(max(counts))]
             self.class_name = target_names[self.class_index]
-
+        '''
     def route_to_next(self,x_input):
         if self.is_leaf:
             print("Should not call route next on leaf node")
